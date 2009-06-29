@@ -1,0 +1,57 @@
+!left_column_width= 200px
+
+body
+  :font-family sans-serif
+  :padding 0px
+  :margin 0px
+  :background-color rgb(130,130,130)
+  :color white
+ul
+  :list-style-image url('/icons/splashy/tag.png')
+table#items
+  :font-size small
+  :border-spacing 0
+  tr
+    td
+      :border-bottom 1px solid rgb(200,200,200)
+      :padding-top 2px
+      :padding-bottom 2px
+td
+  :background-repeat no-repeat
+  :background-position center left
+td.define
+  :background-image url('/icons/splashy/marker_squared_light_blue.png')
+  :width 16px
+td.function
+  :background-image url('/icons/splashy/marker_squared_yellow_green.png')
+  :width 16px
+td.variable
+  :background-image url('/icons/splashy/marker_squared_yellow_orange.png')
+  :width 16px
+td.struct
+  :background-image url('/icons/splashy/marker_squared_violet.png')
+  :width 16px
+.description
+  :font-style italic
+.name
+  :font-weight bold
+td.name
+  :padding-right 4em
+#content
+  :margin-left= !left_column_width
+  :padding-left 20px
+#left
+  :position absolute
+  :width= !left_column_width
+  :left 0
+  :top 0
+  :background-color rgb(180,180,180)
+  :border-right 1px solid rgb(200,200,200)
+  :height 100%
+h2.group
+  :padding-left 20px
+  :background-image url('/icons/splashy/tag.png')
+  :background-repeat no-repeat
+  :background-position center left
+a
+  color: white

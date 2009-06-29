@@ -1,0 +1,4 @@
+%ul
+  - @groups.each do |name, group|
+    %li
+      %a{:href =>"/group/#{name.to_s.humanize}"}= group[:name].to_s.humanize

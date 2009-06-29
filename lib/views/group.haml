@@ -1,0 +1,7 @@
+%h2.group= @group[:name].to_s.humanize
+%table#items
+  - @group_items.each do |item|
+    %tr
+      %td{:class => item[:type]}
+      %td.name= item[:name]
+      %td.description= item[:description]

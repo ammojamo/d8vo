@@ -1,0 +1,9 @@
+%html
+  %head
+    %title Doctavo
+    %link{:rel=>'stylesheet', :href=>'/stylesheets/style.css', :type => "text/css"}
+  %body
+    %div#content
+      = yield
+    %div#left
+      = haml :sidebar, :layout=>false
