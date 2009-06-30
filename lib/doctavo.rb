@@ -105,11 +105,14 @@ class DoctavoParser
   end
 
   def complete_item
+    @item_groups = [ "uncategorized" ] if @item_groups.empty?
+
     item = {
       :id => UUID.create,
       :type => @type,
       :signature => @signature,
       :name => @name,
+      :description => @description,
       :line_number => @line_number,
       :filename => @filename,
       :comments => @comment_lines,
@@ -144,20 +147,34 @@ class DoctavoParser
 
   def process_comment
     @item_groups = []
-
+    paragraph = []
+    @description = nil
     @comment_lines.each do |line|
-
-      # @ingroup
-      if line =~ /^\s*[@\\]ingroup\s+\w/
-        groups = line.scan(/^\s*[@\\]ingroup\s+(.*)/)[0][0].strip rescue ""
-        @item_groups += groups.split(",").map { |group| group.intern }
+      line.strip!
+      if(line.empty? or line =~ /^[@\\]\w/)
+        process_comment_paragraph(paragraph) unless paragraph.empty?
+        paragraph = []
       end
-
-      # @defgroup
-      #if line =~ /^\s*[@\\]defgroup\s+\w/
-      #  group = line.scan(/^\s*[@\\]defgroup\s+(\w+)/)[0][0]
-      #end
+      paragraph << line
     end
+    process_comment_paragraph(paragraph) unless paragraph.empty?
+  end
+
+  def process_comment_paragraph(paragraph)
+    @description = paragraph.join(' ') if @description == nil
+
+    line = paragraph[0]
+
+    # @ingroup
+    if line =~ /^[@\\]ingroup\s+\w/
+      groups = line.scan(/^[@\\]ingroup\s+(.*)/)[0][0].strip rescue ""
+      @item_groups += groups.split(",").map { |group| group.intern }
+    end
+
+    # @defgroup
+    #if line =~ /^\s*[@\\]defgroup\s+\w/
+    #  group = line.scan(/^\s*[@\\]defgroup\s+(\w+)/)[0][0]
+    #end
   end
 
   def add_item_to_group(item, group)

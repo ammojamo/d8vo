@@ -2,9 +2,18 @@ require 'rubygems'
 require 'sinatra'
 require 'doctavo'
 require 'haml'
+require 'sass'
 
 dp = DoctavoParser.new
 dp.parse('example.c')
+
+class String
+  def humanize()
+    humanized = self.tr("_", " ")
+    humanized[0] = humanized[0,1].upcase[0] unless humanized.empty?
+    return humanized
+  end
+end
 
 get '/' do
   @items = dp.items
@@ -22,40 +31,8 @@ get '/group/:name' do
   haml :group
 end
 
-__END__
-
-@@ layout
-%html
-  %head
-    %title Doctavo
-  %body
-    = yield
-
-@@ index
-%h1 Doctavo
-%h2 Items
-%table
-  - @items.each do |item|
-    %tr
-      %td= item[:type]
-      %td= item[:name]
-      %td= item[:signature]
-      %td= item[:filename]
-      %td= item[:line_number]
-
-@@ group_list
-%h2 Groups
-%ul
-  - @groups.each do |name, group|
-    %li
-      %a{:href =>"/group/#{name}"}= group[:name]
-
-@@ group
-%h2= @group[:name]
-%table
-  - @group_items.each do |item|
-    %tr
-      %td= item[:type]
-      %td= item[:name]
-      %td= item[:signature]
-      %td= "#{item[:filename]}:#{item[:line_number]}"
+# SASS stylesheet
+get '/stylesheets/style.css' do
+  headers 'Content-Type' => 'text/css; charset=utf-8'
+  sass :style
+end
